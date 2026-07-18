@@ -24,10 +24,6 @@ import {
   nyeusi,
   space,
   shopify,
-  coverhunt,
-  dcc,
-  kelhel,
-  microverse,
 } from '../assets';
 
 export const navLinks = [
@@ -125,33 +121,18 @@ const technologies = [
 
 const experiences = [
   {
-    title: 'Web Developer',
+    title: 'Software Developer',
+    company_name: 'Kosqu Technolab',
+    iconBg: '#333333',
+    date: 'Feb 2024 - Apr 2025',
+  },
+  {
+    title: 'Web Developer Intern',
     company_name: 'Nancens Enterprises',
     icon: shopify,
     iconBg: '#333333',
     date: 'July 2022 - Jan 2023',
   },
-  // {
-  //   title: 'Mentor (Volunteer)',
-  //   company_name: 'Microverse',
-  //   icon: microverse,
-  //   iconBg: '#333333',
-  //   date: 'Mar 2022 - May 2022',
-  // },
-  // {
-  //   title: 'Junior Software Engineer',
-  //   company_name: 'Kelhel',
-  //   icon: kelhel,
-  //   iconBg: '#333333',
-  //   date: 'May 2022 - Oct 2022',
-  // },
-  // {
-  //   title: 'Full Stack Developer',
-  //   company_name: 'Diversity Cyber Council',
-  //   icon: dcc,
-  //   iconBg: '#333333',
-  //   date: 'Sep 2022 - Present',
-  // },
 ];
 
 const projects = [

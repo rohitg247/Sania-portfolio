@@ -46,8 +46,8 @@ const Hero = () => {
               </span>
             </h1>
             <p className={`${styles.heroSubText} mt-2 text-eerieBlack`}>
-              As a fresh Web Developer, <br className="sm:block hidden" />
-              I'm passionate about creating engaging and functional websites for collaborative projects.
+              As a Full Stack Developer, <br className="sm:block hidden" />
+              I'm passionate about building scalable web applications and turning complex data into actionable insights.
             </p>
           </div>
           <div

@@ -1,10 +1,16 @@
 import { useState, useRef } from 'react';
 import { motion } from 'framer-motion';
-import emailjs from '@emailjs/browser';
 import { styles } from '../styles';
 import { SectionWrapper } from '../hoc';
 import { slideIn } from '../utils/motion';
-import { send, sendHover } from '../assets';
+import { sendPortfolioEmail } from '../utils/email';
+import { send, sendHover, github } from '../assets';
+
+const LinkedInIcon = () => (
+  <svg viewBox="0 0 24 24" fill="currentColor" className="w-full h-full">
+    <path d="M20.45 20.45h-3.55v-5.57c0-1.33-.02-3.04-1.85-3.04-1.85 0-2.14 1.45-2.14 2.94v5.67H9.36V9h3.41v1.56h.05c.48-.9 1.64-1.85 3.38-1.85 3.6 0 4.27 2.37 4.27 5.46v6.28zM5.34 7.43a2.06 2.06 0 1 1 0-4.12 2.06 2.06 0 0 1 0 4.12zM7.12 20.45H3.56V9h3.56v11.45z" />
+  </svg>
+);
 
 const Contact = () => {
   const formRef = useRef();
@@ -25,38 +31,29 @@ const Contact = () => {
     e.preventDefault();
     setLoading(true);
 
-    // sign up on emailjs.com (select the gmail service and connect your account).
-    //click on create a new template then click on save.
-    emailjs
-      .send(
-        'service_tp835gh', // paste your ServiceID here (you'll get one when your service is created).
-        'template_nhgruzj', // paste your TemplateID here (you'll find it under email templates).
-        {
-          from_name: form.name,
-          to_name: 'Rohit Gupta', // put your name here.
-          from_email: form.email,
-          to_email: 'rohitg0409@gmail.com', //put your email here.
-          message: form.message,
-        },
-        'P__zvJJ13dxLaJViF' //paste your Public Key here. You'll get it in your profile section.
-      )
-      .then(
-        () => {
-          setLoading(false);
-          alert('Thank you. I will get back to you as soon as possible.');
+    sendPortfolioEmail({
+      from_name: form.name,
+      to_name: import.meta.env.VITE_CONTACT_TO_NAME,
+      from_email: form.email,
+      to_email: import.meta.env.VITE_CONTACT_TO_EMAIL,
+      message: form.message,
+    }).then(
+      () => {
+        setLoading(false);
+        alert('Thank you. I will get back to you as soon as possible.');
 
-          setForm({
-            name: '',
-            email: '',
-            message: '',
-          });
-        },
-        (error) => {
-          setLoading(false);
-          console.log(error);
-          alert('Something went wrong. Please try again.');
-        }
-      );
+        setForm({
+          name: '',
+          email: '',
+          message: '',
+        });
+      },
+      (error) => {
+        setLoading(false);
+        console.error('EmailJS send failed:', error);
+        alert('Something went wrong. Please try again.');
+      }
+    );
   };
 
   return (
@@ -144,6 +141,23 @@ const Contact = () => {
             />
           </button>
         </form>
+
+        <div className="mt-8 flex gap-6">
+          <a
+            href="https://github.com/rohitg247"
+            target="_blank"
+            rel="noreferrer"
+            className="w-7 h-7 text-timberWolf hover:text-battleGray transition duration-[0.2s] ease-in-out">
+            <img src={github} alt="GitHub" className="w-full h-full object-contain" />
+          </a>
+          <a
+            href="https://www.linkedin.com/in/rohit-gupta-454356170"
+            target="_blank"
+            rel="noreferrer"
+            className="w-7 h-7 text-timberWolf hover:text-battleGray transition duration-[0.2s] ease-in-out">
+            <LinkedInIcon />
+          </a>
+        </div>
       </motion.div>
     </div>
   );

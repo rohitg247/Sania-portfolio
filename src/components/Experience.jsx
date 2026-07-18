@@ -7,8 +7,9 @@ import 'react-vertical-timeline-component/style.min.css';
 import { styles } from '../styles';
 import { experiences } from '../constants';
 import { SectionWrapper } from '../hoc';
-import { download, downloadHover, resume } from '../assets';
+import { download, downloadHover, resume, myResume } from '../assets';
 import { textVariant } from '../utils/motion';
+import { sendPortfolioEmail } from '../utils/email';
 
 const ExperienceCard = ({ experience }) => (
   <VerticalTimelineElement
@@ -31,11 +32,17 @@ const ExperienceCard = ({ experience }) => (
     iconStyle={{ background: experience.iconBg }}
     icon={
       <div className="flex justify-center items-center w-full h-full">
-        <img
-          src={experience.icon}
-          alt={experience.company_name}
-          className="w-[60%] h-[60%] object-contain"
-        />
+        {experience.icon ? (
+          <img
+            src={experience.icon}
+            alt={experience.company_name}
+            className="w-[60%] h-[60%] object-contain"
+          />
+        ) : (
+          <span className="text-white text-[28px] font-bold font-beckman">
+            {experience.company_name.charAt(0)}
+          </span>
+        )}
       </div>
     }>
     <div>
@@ -100,12 +107,22 @@ const Experience = () => {
               sm:mt-[22px] mt-[16px] hover:bg-battleGray 
               hover:text-eerieBlack transition duration-[0.2s] 
               ease-in-out"
-              onClick={() =>
-                window.open(
-                  'resume link', //paste the link to your resume here
-                  '_blank'
-                )
-              }
+              onClick={() => {
+                const link = document.createElement('a');
+                link.href = myResume;
+                link.download = 'Rohit_Gupta_Resume.pdf';
+                link.click();
+
+                sendPortfolioEmail({
+                  from_name: 'Portfolio Visitor',
+                  to_name: import.meta.env.VITE_CONTACT_TO_NAME,
+                  from_email: 'noreply@portfolio.local',
+                  to_email: import.meta.env.VITE_CONTACT_TO_EMAIL,
+                  message: 'Someone just downloaded your resume from the portfolio site.',
+                }).catch((error) => {
+                  console.error('Resume-download notification failed:', error);
+                });
+              }}
               onMouseOver={() => {
                 document
                   .querySelector('.download-btn')

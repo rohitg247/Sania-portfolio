@@ -3,11 +3,10 @@ import nairobi from './backgrounds/nairobi.png';
 import whiteabstract from './backgrounds/white-abstract.png';
 import worldmap from './backgrounds/world-map.png';
 
-import logo from './logo/logo-black.png';
-import logotext from './logo/logo-text-black.png';
+import logotext from './logo/Rohit-logo.png';
 
 import Home from './personal/Home.png';
-// import rohitresume from './personal/Home.pdf';
+import myResume from './personal/My Resume.pdf';
 
 import backend from './icons/backend.png';
 import ux from './icons/ux.png';
@@ -57,9 +56,9 @@ export {
   nairobi,
   whiteabstract,
   worldmap,
-  logo,
   logotext,
   Home,
+  myResume,
   backend,
   ux,
   frontend,
@@ -99,5 +98,4 @@ export {
   dcc,
   kelhel,
   microverse,
-  // rohitresume,
 };

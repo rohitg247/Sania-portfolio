@@ -37,15 +37,13 @@ const About = () => {
       <motion.p
         variants={fadeIn('', '', 0.1, 1)}
         className="mt-4 text-taupe text-[18px] max-w-3xl leading-[30px]">
-        Welcome to my portfolio website! I am a passionate and driven web developer
-        with a strong foundation in HTML, CSS, and JavaScript.
-        With hands-on experience in technologies like ReactJS, NextJS, and WordPress,
-        I have successfully built engaging and responsive websites.
-        I am adept at leveraging APIs, connecting to databases, and implementing authentication systems.
-        During my internship at Shopify and .Liquid, I gained valuable insights into e-commerce and web application development.
-        With a keen eye for detail and a commitment to delivering exceptional results,
-        I am ready to take on new challenges and contribute to the success of your projects.
-        Explore my portfolio to witness my skills and creativity in action. Let's collaborate and bring your ideas to life!
+        Welcome to my portfolio! I&apos;m a Full Stack Developer and Data Analyst with experience designing
+        scalable web applications, efficient database schemas, and secure APIs.
+        I&apos;m proficient in Python, Node.js, React, and Power BI, with hands-on experience implementing
+        SSO authentication, automating workflows, and turning complex datasets into actionable insights.
+        I started out building responsive, Shopify-powered eCommerce experiences, and have since grown
+        into leading development efforts across full-stack and data-driven projects.
+        Explore my portfolio to see my skills and creativity in action &mdash; let&apos;s collaborate and bring your ideas to life!
       </motion.p>
 
       <div className="mt-20 flex flex-wrap gap-10">
