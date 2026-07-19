@@ -33,7 +33,7 @@ export function Footer() {
           <a
             href={PROFILE.resume}
             download
-            className="inline-flex min-h-11 items-center gap-2 px-2 text-sm font-semibold text-muted-foreground transition-colors hover:text-primary"
+            className="inline-flex min-h-11 items-center gap-2 px-2 text-sm font-semibold text-muted-foreground transition-colors hover:text-primary-text"
           >
             <Download className="h-4 w-4" /> Download Resume
           </a>

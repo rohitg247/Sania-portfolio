@@ -20,13 +20,13 @@ export function Education() {
                     <GraduationCap className="h-5 w-5" />
                   </span>
                   <div>
-                    <span className="inline-block rounded-full bg-accent px-3 py-1 text-xs font-bold tracking-wide text-primary">
+                    <span className="inline-block rounded-full bg-accent px-3 py-1 text-xs font-bold tracking-wide text-primary-text">
                       {item.year}
                     </span>
                     <h3 className="mt-3 text-base font-bold leading-snug sm:text-lg">{item.degree}</h3>
                     <p className="mt-1.5 text-sm text-muted-foreground">{item.institution}</p>
                     {item.note ? (
-                      <p className="mt-1 text-sm font-semibold text-primary">{item.note}</p>
+                      <p className="mt-1 text-sm font-semibold text-primary-text">{item.note}</p>
                     ) : null}
                   </div>
                 </CardContent>

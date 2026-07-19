@@ -12,11 +12,16 @@
 
     --primary: 340 100% 71%;
     --primary-foreground: 0 0% 100%;
+    /* AA-compliant accent for small text on light surfaces; --primary is fills only. */
+    --primary-text: 343 55% 44%;
 
     --secondary: 349 100% 78%;
     --secondary-foreground: 240 28% 14%;
 
     --crimson: 343 52% 52%;
+
+    --text-grad-from: #e0447a;
+    --text-grad-to: #a63a5f;
 
     --muted: 340 40% 96%;
     --muted-foreground: 220 9% 46%;
@@ -24,11 +29,12 @@
     --accent: 340 60% 95%;
     --accent-foreground: 240 28% 14%;
 
-    --border: 340 40% 91%;
-    --input: 340 35% 88%;
+    --border: 240 6% 90%;
+    --input: 240 6% 86%;
     --ring: 340 100% 71%;
 
     --glow: rgba(255, 107, 157, 0.3);
+    --shadow-soft: rgba(20, 16, 24, 0.08);
     --radius: 1rem;
   }
 
@@ -41,11 +47,15 @@
 
     --primary: 340 100% 71%;
     --primary-foreground: 240 28% 10%;
+    --primary-text: 340 100% 71%;
 
     --secondary: 349 100% 78%;
     --secondary-foreground: 240 28% 14%;
 
     --crimson: 343 62% 58%;
+
+    --text-grad-from: #ff6b9d;
+    --text-grad-to: #c44569;
 
     --muted: 240 20% 18%;
     --muted-foreground: 218 11% 65%;
@@ -53,11 +63,12 @@
     --accent: 240 24% 20%;
     --accent-foreground: 210 20% 98%;
 
-    --border: 340 30% 26%;
-    --input: 240 20% 22%;
+    --border: 240 10% 24%;
+    --input: 240 10% 24%;
     --ring: 340 100% 71%;
 
     --glow: rgba(255, 107, 157, 0.5);
+    --shadow-soft: rgba(0, 0, 0, 0.35);
   }
 
   * {
@@ -105,7 +116,7 @@
   }
 
   .text-gradient {
-    background-image: linear-gradient(135deg, #ff6b9d, #c44569);
+    background-image: linear-gradient(135deg, var(--text-grad-from), var(--text-grad-to));
     -webkit-background-clip: text;
     background-clip: text;
     color: transparent;
@@ -113,7 +124,7 @@
 
   .glass-card {
     @apply rounded-lg border bg-card/70 backdrop-blur-md;
-    box-shadow: 0 4px 24px -4px var(--glow);
+    box-shadow: 0 4px 24px -6px var(--shadow-soft);
   }
 
   .glow-hover {
@@ -122,7 +133,21 @@
 
   .glow-hover:hover {
     transform: translateY(-4px);
-    box-shadow: 0 0 32px -4px var(--glow);
+    box-shadow: 0 12px 32px -8px var(--shadow-soft);
+  }
+
+  /* Film grain over flat gradients; ::after keeps it off the layout tree. */
+  .grain {
+    position: relative;
+  }
+
+  .grain::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    opacity: 0.035;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
   }
 
   /* Soft pink mesh used behind the contact section (light) / charcoal (dark). */

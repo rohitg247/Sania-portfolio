@@ -8,7 +8,7 @@ import { EXPERIENCE } from '@/lib/constants';
 function TimelineCard({ job }) {
   return (
     <article className="glass-card glow-hover border-l-4 border-l-primary p-6 text-left sm:p-7">
-      <p className="mb-2 text-xs font-bold uppercase tracking-[0.15em] text-primary">{job.period}</p>
+      <p className="mb-2 text-xs font-bold uppercase tracking-[0.15em] text-primary-text">{job.period}</p>
       <h3 className="text-lg font-bold sm:text-xl">{job.title}</h3>
       <p className="mt-1 text-sm font-semibold text-muted-foreground">
         {job.company} · {job.location}

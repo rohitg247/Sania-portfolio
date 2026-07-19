@@ -47,7 +47,7 @@ export function SectionHeading({ eyebrow, title, subtitle, className }) {
   return (
     <div className={cn('mx-auto mb-14 max-w-2xl text-center', className)}>
       {eyebrow ? (
-        <p className="mb-3 text-sm font-semibold uppercase tracking-[0.2em] text-primary">
+        <p className="mb-3 text-sm font-semibold uppercase tracking-[0.2em] text-primary-text">
           {eyebrow}
         </p>
       ) : null}

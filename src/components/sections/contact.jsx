@@ -48,7 +48,7 @@ function ContactInfo() {
             <a
               key={label}
               href={href}
-              className="flex min-h-11 items-center gap-4 rounded-xl transition-colors hover:text-primary"
+              className="flex min-h-11 items-center gap-4 rounded-xl transition-colors hover:text-primary-text"
             >
               {content}
             </a>
@@ -160,7 +160,7 @@ export function Contact() {
                     <p className="mt-3 max-w-sm text-sm text-muted-foreground">
                       Thanks for reaching out. Delivery isn&apos;t connected yet — in the meantime,
                       email{' '}
-                      <a className="font-semibold text-primary" href={`mailto:${PROFILE.email}`}>
+                      <a className="font-semibold text-primary-text" href={`mailto:${PROFILE.email}`}>
                         {PROFILE.email}
                       </a>{' '}
                       directly.
