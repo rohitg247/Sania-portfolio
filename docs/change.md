@@ -53,3 +53,54 @@
 
 ### Deployment caveat discovered
 - Vite 8 uses the `rolldown` bundler, whose platform-specific native binary (`@rolldown/binding-win32-x64-msvc` on Windows) is an npm optional dependency. npm's long-standing optional-dep bug (npm/cli#4828) drops it whenever `node_modules` is mutated (install/uninstall), causing `npm run build` to fail with "Cannot find native binding." Fix: `npm install @rolldown/binding-<platform> --no-save`, or clear `node_modules` + `package-lock.json` and reinstall. Flag for Netlify: a clean CI install usually pulls the correct Linux binary, but if the build fails there, this is why.
+
+---
+
+## 2026-07-19 — Full revamp to Sania Ansari's portfolio (Vite → Next.js 14)
+
+> Everything below replaces Rohit Gupta's portfolio. Entries above are historical.
+
+### Deleted
+- `src/` (entire old Vite React app), `dist/`, `public/` (old assets)
+- `index.html`, `vite.config.js`, `eslint.config.js` — Vite toolchain
+- `package.json`, `package-lock.json` — replaced with Next.js dependency set
+- `.env.example` — obsolete EmailJS placeholders
+- Old `CLAUDE.md`, `README.md`
+
+### Created — config
+- `package.json` — Next 14.2.35, React 18, Tailwind v3, R3F v8, drei v9, framer-motion, next-themes
+- `next.config.mjs` — strict mode, `transpilePackages: ['three']`
+- `tailwind.config.js` — class dark mode, HSL token colours, float/shimmer/blink keyframes
+- `postcss.config.js`, `jsconfig.json` (`@/*` alias), `.eslintrc.json`
+- `netlify.toml` — `@netlify/plugin-nextjs` runtime; `.nvmrc` — Node 20
+- `.gitignore` — rewritten for Next.js
+
+### Created — app shell
+- `src/app/layout.jsx` — fonts, metadata, viewport theme-colour, ThemeProvider, `<noscript>` opacity override
+- `src/app/page.jsx` — section composition
+- `src/app/globals.css` — light/dark tokens, `.gradient-primary`, `.text-gradient`, `.glass-card`, `.glow-hover`, `.mesh-gradient`, reduced-motion rules
+- `src/app/icon.svg` — favicon (was 404)
+
+### Created — content & infrastructure
+- `src/lib/constants.js` — all site content, transcribed from the resume PDF
+- `src/lib/utils.js` — `cn()`
+- `src/hooks/use-media-query.js` — SSR-safe matchMedia + desktop/pointer/reduced-motion helpers
+- `src/components/theme-provider.jsx`, `theme-toggle.jsx`, `custom-cursor.jsx`, `section-wrapper.jsx`, `navbar.jsx`, `footer.jsx`
+- `src/components/ui/` — `button.jsx`, `card.jsx`, `input.jsx`, `textarea.jsx`, `label.jsx`
+
+### Created — sections
+- `src/components/sections/` — `hero.jsx`, `about.jsx`, `skills.jsx`, `experience.jsx`, `projects.jsx`, `education.jsx`, `contact.jsx`
+
+### Created — 3D
+- `src/components/canvas/ball-canvas.jsx` — R3F Canvas, icosahedron + Decal, Float, OrbitControls
+- `src/components/canvas/skill-ball.jsx` — dynamic `ssr:false` wrapper, glow ring, fallback tile
+- `src/components/canvas/ball-boundary.jsx` — per-ball error boundary
+
+### Created — assets
+- `public/icons/*.svg` — 12 self-authored transparent lettermark skill icons
+- `public/profile-placeholder.svg` — gradient avatar stand-in
+- `public/Sania_Ansari_Resume.pdf` — copied from `docs/Letters/Sania_Ansari_Resume_Designed.pdf`
+
+### Rewritten
+- `CLAUDE.md` — Sania's project context, version pins, 3D gotchas; Session Handoff Protocol preserved verbatim
+- `README.md` — setup, structure, deployment

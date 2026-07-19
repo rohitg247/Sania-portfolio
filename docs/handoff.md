@@ -68,3 +68,54 @@ Vite 8's `rolldown` bundler needs a platform-native binary installed as an npm o
 ### Blocked on (user action needed)
 
 Rohit must set up his own EmailJS account at `dashboard.emailjs.com` and replace `.env` values. Current values are likely dead tutorial boilerplate. Steps in `docs/plan.md`.
+
+---
+
+## 2026-07-19 — Full Revamp: Rohit's Portfolio → Sania Ansari's Portfolio
+
+> **Project pivot.** Everything above this line refers to Rohit Gupta's portfolio (Vite + React 19). This repo now hosts **Sania Ansari's** portfolio and was rebuilt from scratch. Prior entries are retained as history only.
+
+### What was accomplished
+
+Complete rebuild, Vite → **Next.js 14 (App Router)**:
+
+1. **Wiped** the old Vite app (`src/`, `dist/`, `public/`, `index.html`, `vite.config.js`, `eslint.config.js`, `package.json`, old `CLAUDE.md`/`README.md`, `.env.example`). Kept `.git/`, `docs/`, `MIT.md`.
+2. **Scaffolded** Next.js 14 + React 18 + Tailwind v3 + Framer Motion + R3F v8/drei v9, hand-written configs (no `create-next-app`).
+3. **Theme system** — HSL CSS-variable tokens, light default + dark via `next-themes` (`storageKey: sania-theme`), Plus Jakarta Sans + Syne via `next/font`.
+4. **Content layer** — `src/lib/constants.js`, everything transcribed from `docs/Letters/Sania_Ansari_Resume_Designed.pdf`.
+5. **All 9 sections built** — navbar (sticky + mobile drawer), hero (typewriter + gradient orbs), about (bio + language bars), skills (3D balls), experience (alternating timeline), projects (placeholder skeletons), education, contact, footer.
+6. **3D skill balls** — 12 R3F canvases, icosahedron + Decal, OrbitControls, per-ball error boundary.
+7. **Netlify** — `netlify.toml` + `@netlify/plugin-nextjs` + `.nvmrc` (Node 20).
+
+### Decisions made and why
+
+- **Next 14 forces React 18**, so R3F stepped *down* v9→v8 and Tailwind v4→v3 (the old repo ran React 19 / R3F v9 / Tailwind v4). Getting this wrong breaks the build.
+- **Contact form is UI-only** (user's choice) — validates and shows an animated checkmark, sends nothing.
+- **Skill icons are self-authored transparent SVGs**, not PNGs. Originally planned SVG→PNG via `sharp`; dropped after the user pushed back. SVG works fine as a WebGL texture given explicit `width`/`height`, avoids a second format and a build step, and the error boundary covers the residual risk.
+- **Phone corrected to `+91 7045351403`** — the resume PDF's text layer contains a wrong US number.
+
+### Bugs found and fixed during verification
+
+- **Balls rendered as flat squares** — Canvas `fov: 26` was too narrow for a `scale 2.75` sphere, clipping it to a flat patch. Fixed to `fov: 75`, `position: [0,0,5]`.
+- **Balls rendered muddy grey** — `directionalLight` at `[0,0,0.05]` sits inside the sphere, giving a degenerate light direction. Moved to `[3,4,6]`.
+- **Mobile balls were flat** — the low-power path dropped the directional light entirely. Now only *shadows*/dpr/antialias/OrbitControls are gated; the light (cheap) stays.
+- **Page invisible without JS** — Framer Motion serialises `initial` into SSR markup, so 40 elements shipped as `opacity:0`. Added a `<noscript>` override in `layout.jsx`.
+- **Sub-44px touch targets** — navbar logo and desktop nav links. Now `min-h-11` everywhere; verified zero violations at all four breakpoints.
+
+### State: complete and verified
+
+`npm run build` passes clean. Browser-verified (headless Chrome + SwiftShader) at 375/768/1024/1440 px:
+- No horizontal scroll at any width
+- 12/12 canvases live at every breakpoint; skills grid reflows 2 → 3 → 4 columns
+- Zero touch targets under 44px; zero JS console errors
+- Dark mode toggles and persists to `localStorage`
+- Icon-failure test: removing one icon left 11/11 remaining balls rendering
+
+### Most important next step
+
+**Push access.** `git push` to `rohitg247/Sania-portfolio.git` returns 403 — the authenticated account (`RohitGupta247`) lacks write permission, or the repo does not exist yet. Resolve that, then deploy to Netlify and confirm WebGL initialises on the deployed URL.
+
+### Also outstanding
+
+- Regenerate the resume PDF with the correct `+91` phone number — the downloadable file currently contradicts the site.
+- Supply real LinkedIn/Instagram URLs and a real profile photo.

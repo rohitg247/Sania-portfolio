@@ -1,72 +1,75 @@
-# Project Plan — Portfolio Refresh
+# Plan — Sania Ansari Portfolio
 
 Last updated: 2026-07-19
 
----
-
-## Content & Branding
-
-- [x] Navbar — wordmark-only logo (`Rohit-logo.png`), remove RG monogram
-- [x] Favicon — replace blank `public/logo.png` with RG monogram
-- [x] Work Experience — sync from `My Resume.pdf` (Kosqu Technolab + Nancens Enterprises intern)
-- [x] Experience icon fallback — show first letter when no company logo exists
-- [x] Resume button — real file download of `My Resume.pdf`
-- [x] Resume download notification — EmailJS fire-and-forget to `rohitg247@gmail.com`
-- [x] `src/utils/email.js` — shared helper for Contact + Experience
-- [x] Contact form — env vars, corrected recipient, better error logging
-- [x] GitHub + LinkedIn links — added below Contact form
-- [x] Hero tagline — "fresh Web Developer" → Full Stack Developer copy
-- [x] About bio — rewritten to match resume identity
-- [x] Unused assets — moved to `src/assets/unused/` (gitignored)
-- [x] `.env` / `.env.example` / `.gitignore` — created/updated
+> This repo was fully revamped from Rohit Gupta's portfolio (Vite + React 19) to **Sania Ansari's** portfolio (Next.js 14). The previous plan is superseded; see `docs/handoff.md` and `docs/change.md` for the history.
 
 ---
 
-## Dependency Upgrade
+## Build — complete
 
-- [x] Remove `react-tilt` and `maath` (unused)
-- [x] Tailwind CSS 3 → 4.3.2 (`@theme` in index.css, `@tailwindcss/vite` plugin)
-- [x] React 18.2 → 19.2.7 (pinned, due to r3f `<19.3` constraint)
-- [x] `react-dom` 18.2 → 19.2.7
-- [x] `@react-three/fiber` 8 → 9.6.1
-- [x] `@react-three/drei` 9 → 10.7.7
-- [x] `three` 0.152 → 0.185.1
-- [x] Vite 4 → 8.1.5
-- [x] `@vitejs/plugin-react` 4 → 6.0.3
-- [x] ESLint 8 → 10 (flat config: `.eslintrc.cjs` → `eslint.config.js`)
-- [x] `eslint-plugin-react` / `-react-hooks` / `-react-refresh` updated
-- [x] Add `@eslint/js` + `globals` (ESLint 10 companion packages)
-- [x] `framer-motion` 10 → 12.42.2
-- [x] `react-router-dom` 6 → 7.18.1
-- [x] `react-vertical-timeline-component` 3 → 4.0.0
-- [x] `@emailjs/browser` 3 → 4.4.1
-- [x] Remove `autoprefixer` + `postcss`
-- [x] `npm run build` clean + visual sweep (Hero verified, layout fix confirmed)
-- [x] Verify 3D Tech section (Ball.jsx canvas) renders correctly after r3f upgrade
-- [x] **Fix Tailwind v4 cascade-layer regression** (universal reset wrapped in `@layer base`)
+- [x] Wipe the old Vite app; keep `.git/`, `docs/`, `MIT.md`
+- [x] Scaffold Next.js 14 App Router (JavaScript, `src/`, `@/*` alias)
+- [x] Pin React 18 / R3F v8 / drei v9 / Tailwind v3 (Next 14 constraint)
+- [x] Theme tokens — HSL CSS variables, light default + dark via `next-themes`
+- [x] Fonts — Plus Jakarta Sans (body) + Syne (display) via `next/font`
+- [x] Content layer — `src/lib/constants.js`, transcribed from the resume PDF
+- [x] Shared infra — `cn()`, media-query hooks, `SectionWrapper`/`FadeIn`, custom cursor, theme toggle
+- [x] UI primitives — button, card, input, textarea, label
+- [x] Assets — 12 skill icons, profile placeholder, resume PDF, favicon
 
----
+### Sections
+- [x] Navbar — sticky, blurred, mobile slide-in drawer
+- [x] Hero — typewriter, gradient orbs, 3 CTAs
+- [x] About — bio + animated language bars
+- [x] Skills — 12 3D balls, 2/3/4-column responsive grid
+- [x] Experience — alternating animated timeline
+- [x] Projects — "Coming Soon" shimmer placeholders
+- [x] Education — 4 cards
+- [x] Contact — info card + validated form with animated success state
+- [x] Footer
 
-## User Action Required (blocking email feature)
+### 3D skill balls
+- [x] R3F Canvas, icosahedron + Decal, Float, OrbitControls
+- [x] `next/dynamic` with `ssr: false`
+- [x] Mobile degradation — dpr 1, no shadows, no antialias, controls disabled
+- [x] Per-ball error boundary with static fallback tile
 
-Rohit must set up EmailJS before the contact form and resume-download notification deliver real email:
-
-1. Sign in at `dashboard.emailjs.com` (use `rohitg247@gmail.com` Google login)
-2. **Email Services** → Add New Service → Gmail → authorize → copy **Service ID**
-3. **Email Templates** → Create from "Contact Us" starter:
-   - "To Email": hardcode `rohitg247@gmail.com` (not a variable)
-   - "From Name": `{{from_name}}`
-   - "Reply-To": `{{from_email}}`
-   - Body: include `{{message}}`
-   - Copy **Template ID**
-4. **Account** page → copy **Public Key**
-5. Update `.env` with real values (or send me the three IDs and I'll do it)
+### Deployment
+- [x] `netlify.toml` + `@netlify/plugin-nextjs`
+- [x] `.nvmrc` — Node 20
 
 ---
 
-## Explicitly Out of Scope
+## Verification — complete
 
-- Projects section — user will update later
-- Actis Technologies job entry — user will provide title/dates/bullets later
-- `My Resume.pdf` content — user will update the file themselves
-- Any Actis employer infrastructure (SMTP relay, Docker API)
+- [x] `npm run build` passes clean
+- [x] No horizontal scroll at 375 / 768 / 1024 / 1440 px
+- [x] 12/12 canvases live at every breakpoint; grid reflows 2 → 3 → 4
+- [x] Zero touch targets under 44px
+- [x] Zero JS console errors
+- [x] Dark mode toggles and persists to `localStorage`
+- [x] Icon-failure test — one missing icon leaves the other 11 balls rendering
+- [x] `<noscript>` fallback so content is visible without JS
+
+---
+
+## Blocked
+
+- [ ] **Push to `rohitg247/Sania-portfolio.git`** — returns 403. The authenticated account (`RohitGupta247`) lacks write access, or the repo does not exist yet. Needs the user to resolve access.
+- [ ] **Netlify deploy verification** — cannot run until the push lands. Confirm the build picks up `@netlify/plugin-nextjs`, fonts load, and WebGL initialises on the deployed URL.
+
+## Pending — needs input from Sania
+
+- [ ] Real LinkedIn / Instagram URLs (currently `#` placeholders)
+- [ ] Real profile photo (currently `public/profile-placeholder.svg`)
+- [ ] Regenerate the resume PDF with the correct `+91 7045351403` phone number — the downloadable file currently contradicts the site's contact card
+
+---
+
+## Future scope (out of scope for now)
+
+- Wire the contact form to a real email service (Resend via an API route, or EmailJS)
+- Replace the Projects placeholders with real case studies once available
+- Revisit Next.js advisories that have no fix inside the 14.x line (would require Next 15/16)
+- Consider real brand icons for the skill balls if licensing is cleared

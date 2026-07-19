@@ -1,5 +1,8 @@
 node_modules
+.next
+out
 dist
 .env
 .env.local
-src/assets/unused
+.netlify
+.DS_Store

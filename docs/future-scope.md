@@ -49,3 +49,31 @@ Vite 8 uses the new rolldown (Rust) bundler. Its platform-native binary is an np
 
 ### Actis Technologies company logo
 Once Rohit has the company icon/logo, add it to `src/assets/company/` and reference it in the Actis experience entry in `src/constants/index.js`. The fallback badge ("A" initial) will be replaced automatically once `icon` is set.
+
+---
+
+# PROJECT PIVOT — 2026-07-19
+
+**Everything above this line belongs to Rohit Gupta's portfolio and is obsolete.** This repo now hosts Sania Ansari's portfolio (Next.js 14). Prior entries are retained as history per the handoff protocol, not as live work items.
+
+---
+
+## Sania Ansari portfolio — deferred items
+
+### Contact form delivery
+The form validates and shows an animated success state but sends nothing (user's explicit choice for this build). Options when ready: a Next.js API route + Resend (server-side, keys hidden), or EmailJS client-side. The Netlify Next.js Runtime is already in place, so an API route needs no deploy changes.
+
+### Real project case studies
+`src/components/sections/projects.jsx` renders 4 shimmer placeholders under "My Work — Coming Soon". Replace with real work once Sania has publishable case studies.
+
+### Real social URLs and profile photo
+`SOCIALS` in `src/lib/constants.js` are `#` placeholders. `public/profile-placeholder.svg` is a generated gradient avatar.
+
+### Resume PDF phone number
+`docs/Letters/Sania_Ansari_Resume_Designed.pdf` (and the copy served at `public/Sania_Ansari_Resume.pdf`) lists a US phone number. The correct number, `+91 7045351403`, is already live on the site. Regenerate the PDF so the download stops contradicting the contact card.
+
+### Next.js security advisories
+`npm audit` reports advisories with no fix inside the 14.x line — they require Next 16. We are on the newest patched 14.2.x. Moving off 14 also means React 19, which means R3F v9 and Tailwind v4; treat as a coordinated upgrade, not a bump.
+
+### Skill ball icons
+Currently self-authored lettermark SVGs (Ads, Meta, Ai, Ps, …) to avoid third-party brand assets. Swap for real product logos only if licensing is cleared.
