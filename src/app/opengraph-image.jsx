@@ -1,6 +1,9 @@
 import { ImageResponse } from 'next/og';
 import { PROFILE } from '@/lib/constants';
 
+// Node runtime of @vercel/og fails on Windows paths containing spaces; edge build doesn't.
+export const runtime = 'edge';
+
 export const alt = `${PROFILE.name} — ${PROFILE.role}`;
 export const size = { width: 1200, height: 630 };
 export const contentType = 'image/png';
