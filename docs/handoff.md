@@ -185,3 +185,52 @@ to any other GitHub repo (e.g. `Rohit-Portfolio`) will prompt for sign-in once.
 
 **Next step is now the Netlify deploy** — connect the repo and verify the build picks
 up `@netlify/plugin-nextjs`, fonts load, and WebGL initialises on the deployed URL.
+
+---
+
+## 2026-07-20 — Branch rename, Netlify guide, dev-cache incident
+
+### What was accomplished
+
+- **Local branch renamed `dev` → `main`**, now tracking `origin/main` directly. Plain `git push` works; the temporary `push.default = upstream` workaround was removed as no longer needed.
+- **`docs/deploy-netlify.md` written** — full deploy walkthrough, post-deploy checklist, troubleshooting, custom domain notes.
+- **Confirmed Netlify needs zero code changes.** `netlify.toml`, `.nvmrc` and the build script are already committed; no env vars are required because the contact form doesn't send.
+
+### Investigated and dismissed — do not re-open
+
+Suspected `next/image` would break on Netlify because the profile placeholder is an
+SVG and Next refuses to optimise SVGs without `dangerouslyAllowSVG`. Requesting
+`/_next/image?url=%2Fprofile-placeholder.svg` does indeed return **400**, which looked
+damning.
+
+It is a false alarm. Next.js never routes SVGs through the optimiser — the rendered
+`<img>` points directly at `/profile-placeholder.svg`, loads at naturalWidth 640, and
+the page records zero failed requests. **No image config is needed.** Verified in a
+real browser, not inferred.
+
+### Incident — corrupted `.next`, self-inflicted
+
+The user's `npm run dev` started failing with `Cannot find module './948.js'`.
+
+**Cause:** production `npm run build` runs were fired while the user's dev server was
+live. Both write to the same `.next` directory, so the build overwrote chunks the dev
+server was actively serving.
+
+**Fix:** stop all servers, `rm -rf .next`, restart dev. Source code was never affected —
+a clean build passed and `git status` showed no modified source files.
+
+**Rule for future sessions: never run `npm run build` while a dev server is running.**
+Check for listeners on ports 3000+ first, and stop any test servers when finished —
+`TaskStop` alone did not reliably free the ports; `Stop-Process` on the PID from
+`Get-NetTCPConnection` did.
+
+### State
+
+`origin/main` and local `main` are in sync at `a844c0e`. Working tree clean, build
+passing, no servers left running.
+
+### Most important next step
+
+**Deploy to Netlify** by following `docs/deploy-netlify.md`. Then work the post-deploy
+checklist — particularly that the 3D balls initialise (WebGL differs behind a CDN) and
+that fonts resolve (`next/font` fetches from Google at build time).

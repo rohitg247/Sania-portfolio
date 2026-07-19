@@ -56,14 +56,24 @@ Last updated: 2026-07-19
 
 ## Next up
 
-- [x] ~~Push to `rohitg247/Sania-portfolio.git`~~ — done 2026-07-19. The 403 was a stale Windows credential cached for `RohitGupta247`; deleting `LegacyGeneric:target=git:https://github.com` resolved it. Local `dev` now tracks `origin/main`.
-- [ ] **Netlify deploy** — connect the repo. Confirm the build picks up `@netlify/plugin-nextjs`, fonts load, and WebGL initialises on the deployed URL (WebGL behaves differently behind a CDN than on localhost).
+- [x] ~~Push to `rohitg247/Sania-portfolio.git`~~ — done 2026-07-19. The 403 was a stale Windows credential cached for `RohitGupta247`; deleting `LegacyGeneric:target=git:https://github.com` resolved it.
+- [x] ~~Rename local branch `dev` → `main`~~ — done 2026-07-20. Tracks `origin/main`; plain `git push` works.
+- [x] ~~Write the Netlify deployment guide~~ — `docs/deploy-netlify.md`, done 2026-07-20. Confirmed **no code changes are required** to deploy.
+- [ ] **Deploy to Netlify** — follow `docs/deploy-netlify.md`. Sign in with the `rohitg247` GitHub account, import the repo, deploy. Settings auto-populate from `netlify.toml`; no env vars needed.
+- [ ] **Post-deploy checks** — on the live URL: 3D balls initialise (WebGL differs behind a CDN), fonts resolve (`next/font` fetches at build time), resume downloads, dark mode persists, no horizontal scroll at 375px.
 
 ## Pending — needs input from Sania
 
 - [ ] Real LinkedIn / Instagram URLs (currently `#` placeholders)
 - [ ] Real profile photo (currently `public/profile-placeholder.svg`)
 - [x] ~~Regenerate the resume PDF with the correct phone number~~ — resolved 2026-07-19 by switching the served file to `docs/Letters/Sania_Ansari_Resume.pdf`, which already carries `+91 7045351403`
+
+---
+
+## Settled — do not re-open
+
+- **`next/image` + the placeholder SVG is fine.** `/_next/image?url=...svg` returns 400, but Next never routes SVGs through the optimiser; the rendered `<img>` hits `/profile-placeholder.svg` directly and loads. No `dangerouslyAllowSVG`, no image config.
+- **Never run `npm run build` while a dev server is live.** They share `.next`, and the build corrupts the running server (`Cannot find module './948.js'`). Stop servers first; `rm -rf .next` recovers.
 
 ---
 

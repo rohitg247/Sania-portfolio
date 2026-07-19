@@ -77,3 +77,9 @@ The form validates and shows an animated success state but sends nothing (user's
 
 ### Skill ball icons
 Currently self-authored lettermark SVGs (Ads, Meta, Ai, Ps, …) to avoid third-party brand assets. Swap for real product logos only if licensing is cleared.
+
+### Contact form delivery — revisit when ready
+Already noted above; adding only that the Netlify Next.js Runtime is now confirmed in place, so an API route can be added with no deploy reconfiguration. Static export would have forced a re-plumb — that was the reason for keeping the runtime.
+
+### Netlify build hardening
+Not needed today, but if builds ever get slow or flaky: Netlify caches `node_modules` between builds automatically; `next/font` fetching from Google at build time is the most likely transient failure point (falls back to serif). Self-hosting the two fonts locally would remove that dependency entirely.

@@ -117,3 +117,18 @@
 
 ### Note
 The new resume omits the metrics the old one contained (100+ enquiries/month, ₹1.5 lakh/month budget, ~25% CPL reduction). Per the user's decision these remain on the site; the downloadable PDF simply words them more generally.
+
+---
+
+## 2026-07-20 — Branch rename, Netlify guide
+
+### Created
+- `docs/deploy-netlify.md` — step-by-step Netlify deployment guide with post-deploy verification checklist and troubleshooting.
+
+### Changed
+- Local branch renamed `dev` → `main`, tracking `origin/main` directly. The temporary `push.default = upstream` config (a workaround for the `dev` → `main` name mismatch) was removed, since the mismatch no longer exists.
+- `docs/handoff.md`, `docs/plan.md` — push blocker recorded as resolved; Netlify promoted to the next step.
+
+### Verified, not changed
+- **`next/image` with the placeholder SVG works as-is.** Suspected a bug because Next refuses to optimise SVGs without `dangerouslyAllowSVG`, and `/_next/image?url=...svg` does return 400. But Next never routes SVGs through the optimiser — the rendered `<img>` points straight at `/profile-placeholder.svg` and loads at 640px with zero failed requests. **No image configuration is needed for Netlify.** Do not "fix" this.
+- Netlify needs **no code changes**: `netlify.toml`, `.nvmrc` (Node 20) and the `build` script already cover it, and no environment variables are required.
