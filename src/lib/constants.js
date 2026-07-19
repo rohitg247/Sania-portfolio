@@ -44,28 +44,29 @@ export const LANGUAGES = [
   { name: 'Marathi', level: 'Conversational' },
 ];
 
-// `icon` maps to /public/icons/<icon>.png — see CLAUDE.md for how these were generated.
+// `icon` keys map to components in src/components/sections/skills.jsx.
+// `color` is the official brand hex (Simple Icons); concepts use the site accent.
 export const SKILL_GROUPS = [
   {
     title: 'Marketing',
     skills: [
-      { name: 'Google Ads', icon: 'google-ads' },
-      { name: 'Meta Ads', icon: 'meta-ads' },
-      { name: 'SEO', icon: 'seo' },
-      { name: 'CRM', icon: 'crm' },
-      { name: 'Email Automation', icon: 'email-automation' },
-      { name: 'Lead Generation', icon: 'lead-generation' },
+      { name: 'Google Ads', icon: 'google-ads', color: '#4285F4' },
+      { name: 'Meta Ads', icon: 'meta-ads', color: '#0467DF' },
+      { name: 'SEO', icon: 'seo', color: '#e0447a' },
+      { name: 'CRM', icon: 'crm', color: '#e0447a' },
+      { name: 'Email Automation', icon: 'email-automation', color: '#e0447a' },
+      { name: 'Lead Generation', icon: 'lead-generation', color: '#e0447a' },
     ],
   },
   {
     title: 'Design Tools',
     skills: [
-      { name: 'Illustrator', icon: 'illustrator' },
-      { name: 'Photoshop', icon: 'photoshop' },
-      { name: 'Premiere Pro', icon: 'premiere-pro' },
-      { name: 'CorelDRAW', icon: 'coreldraw' },
-      { name: 'Canva', icon: 'canva' },
-      { name: 'Meta Business Suite', icon: 'meta-business-suite' },
+      { name: 'Illustrator', icon: 'illustrator', color: '#FF9A00' },
+      { name: 'Photoshop', icon: 'photoshop', color: '#31A8FF' },
+      { name: 'Premiere Pro', icon: 'premiere-pro', color: '#9999FF' },
+      { name: 'CorelDRAW', icon: 'coreldraw', color: null },
+      { name: 'Canva', icon: 'canva', color: '#00C4CC' },
+      { name: 'Meta Business Suite', icon: 'meta-business-suite', color: '#0467DF' },
     ],
   },
 ];
