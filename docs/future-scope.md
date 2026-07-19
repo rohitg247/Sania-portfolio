@@ -83,3 +83,22 @@ Already noted above; adding only that the Netlify Next.js Runtime is now confirm
 
 ### Netlify build hardening
 Not needed today, but if builds ever get slow or flaky: Netlify caches `node_modules` between builds automatically; `next/font` fetching from Google at build time is the most likely transient failure point (falls back to serif). Self-hosting the two fonts locally would remove that dependency entirely.
+
+---
+
+## 2026-07-20 — post v2-revamp additions
+
+### Merge dev → main
+The v2 revamp lives on `origin/dev`. After user review, merge to `main` and deploy.
+
+### OG image live verification
+After deploy, confirm `<site>/opengraph-image` renders on Netlify's runtime and that
+WhatsApp/LinkedIn link previews pick it up (they cache aggressively — use their debuggers).
+
+### Custom OG font
+`next/og` currently uses its bundled default font, not Syne. Loading the Syne WOFF into
+`ImageResponse` would make link previews match the site's display face.
+
+### Real case-study cards
+The single "in progress" projects card is designed to be replaced by a proper card grid
+once Sania supplies 2–3 case studies with metrics.

@@ -1,85 +1,62 @@
 # Plan — Sania Ansari Portfolio
 
-Last updated: 2026-07-19
+Last updated: 2026-07-20 (v2 design revamp)
 
-> This repo was fully revamped from Rohit Gupta's portfolio (Vite + React 19) to **Sania Ansari's** portfolio (Next.js 14). The previous plan is superseded; see `docs/handoff.md` and `docs/change.md` for the history.
-
----
-
-## Build — complete
-
-- [x] Wipe the old Vite app; keep `.git/`, `docs/`, `MIT.md`
-- [x] Scaffold Next.js 14 App Router (JavaScript, `src/`, `@/*` alias)
-- [x] Pin React 18 / R3F v8 / drei v9 / Tailwind v3 (Next 14 constraint)
-- [x] Theme tokens — HSL CSS variables, light default + dark via `next-themes`
-- [x] Fonts — Plus Jakarta Sans (body) + Syne (display) via `next/font`
-- [x] Content layer — `src/lib/constants.js`, transcribed from the resume PDF
-- [x] Shared infra — `cn()`, media-query hooks, `SectionWrapper`/`FadeIn`, custom cursor, theme toggle
-- [x] UI primitives — button, card, input, textarea, label
-- [x] Assets — 12 skill icons, profile placeholder, resume PDF, favicon
-
-### Sections
-- [x] Navbar — sticky, blurred, mobile slide-in drawer
-- [x] Hero — typewriter, gradient orbs, 3 CTAs
-- [x] About — bio + animated language bars
-- [x] Skills — 12 3D balls, 2/3/4-column responsive grid
-- [x] Experience — alternating animated timeline
-- [x] Projects — "Coming Soon" shimmer placeholders
-- [x] Education — 4 cards
-- [x] Contact — info card + validated form with animated success state
-- [x] Footer
-
-### 3D skill balls
-- [x] R3F Canvas, icosahedron + Decal, Float, OrbitControls
-- [x] `next/dynamic` with `ssr: false`
-- [x] Mobile degradation — dpr 1, no shadows, no antialias, controls disabled
-- [x] Per-ball error boundary with static fallback tile
-
-### Deployment
-- [x] `netlify.toml` + `@netlify/plugin-nextjs`
-- [x] `.nvmrc` — Node 20
+> v1 build history is in `docs/handoff.md` / `docs/change.md`. The 2026-07-20 v2
+> design revamp (full High/Medium/Nice audit implementation) lives on the **`dev`
+> branch**; `main` still carries v1 until the user reviews and merges.
 
 ---
 
-## Verification — complete
+## v2 revamp — complete (on `dev`)
 
-- [x] `npm run build` passes clean
-- [x] No horizontal scroll at 375 / 768 / 1024 / 1440 px
-- [x] 12/12 canvases live at every breakpoint; grid reflows 2 → 3 → 4
-- [x] Zero touch targets under 44px
-- [x] Zero JS console errors
-- [x] Dark mode toggles and persists to `localStorage`
-- [x] Icon-failure test — one missing icon leaves the other 11 balls rendering
-- [x] `<noscript>` fallback so content is visible without JS
+- [x] AA contrast: `--primary-text` token; bright pink restricted to fills
+- [x] Neutralized borders/shadows; pink reserved for key accents
+- [x] Hero: 2 CTAs (one primary), word-rotate replaces typewriter, count-up stat row, name stagger, fluid type, grain
+- [x] Left-aligned section headings, gradient underline bar removed
+- [x] Language star-bars → proficiency chips
+- [x] Education trimmed to Diploma + Bachelor (user-approved)
+- [x] Skills: real brand logos (Simple Icons CC0) + lucide in spotlight-hover grid
+- [x] three/@react-three/fiber/@react-three/drei uninstalled; canvas components and `public/icons/` deleted
+- [x] Scrollspy nav pill + scroll-progress hairline
+- [x] Button press states; custom cursor deleted; drawer inerts page
+- [x] Projects: single intentional "case studies in progress" card (user-approved)
+- [x] Timeline: single left rail
+- [x] OG image via next/og + openGraph/twitter metadata + metadataBase
+- [x] CLAUDE.md + docs synced
+- [x] `npm run build` clean after dep removal (158 kB first load)
 
----
+## Verification — remaining
+
+- [~] Final `npm run build` + visual pass (light/dark, 375px/desktop) before handing to user
+- [ ] User review of `dev` in browser
+- [ ] Reduced-motion emulation check (word-rotate static, stats show final values)
 
 ## Next up
 
-- [x] ~~Push to `rohitg247/Sania-portfolio.git`~~ — done 2026-07-19. The 403 was a stale Windows credential cached for `RohitGupta247`; deleting `LegacyGeneric:target=git:https://github.com` resolved it.
-- [x] ~~Rename local branch `dev` → `main`~~ — done 2026-07-20. Tracks `origin/main`; plain `git push` works.
-- [x] ~~Write the Netlify deployment guide~~ — `docs/deploy-netlify.md`, done 2026-07-20. Confirmed **no code changes are required** to deploy.
-- [ ] **Deploy to Netlify** — follow `docs/deploy-netlify.md`. Sign in with the `rohitg247` GitHub account, import the repo, deploy. Settings auto-populate from `netlify.toml`; no env vars needed.
-- [ ] **Post-deploy checks** — on the live URL: 3D balls initialise (WebGL differs behind a CDN), fonts resolve (`next/font` fetches at build time), resume downloads, dark mode persists, no horizontal scroll at 375px.
+- [ ] **User reviews `dev`**, then merge `dev` → `main`
+- [ ] Deploy to Netlify per `docs/deploy-netlify.md` (unchanged: no env vars needed; `metadataBase` uses Netlify's injected `URL`)
+- [ ] Post-deploy: OG image at `<site>/opengraph-image`, link-preview debuggers, resume download, dark mode, 375px overflow
 
 ## Pending — needs input from Sania
 
-- [ ] Real LinkedIn / Instagram URLs (currently `#` placeholders)
+- [ ] Real LinkedIn / Instagram URLs (currently `#`)
 - [ ] Real profile photo (currently `public/profile-placeholder.svg`)
-- [x] ~~Regenerate the resume PDF with the correct phone number~~ — resolved 2026-07-19 by switching the served file to `docs/Letters/Sania_Ansari_Resume.pdf`, which already carries `+91 7045351403`
+- [ ] 2–3 case studies to replace the single projects card
 
 ---
 
 ## Settled — do not re-open
 
-- **`next/image` + the placeholder SVG is fine.** `/_next/image?url=...svg` returns 400, but Next never routes SVGs through the optimiser; the rendered `<img>` hits `/profile-placeholder.svg` directly and loads. No `dangerouslyAllowSVG`, no image config.
-- **Never run `npm run build` while a dev server is live.** They share `.next`, and the build corrupts the running server (`Cannot find module './948.js'`). Stop servers first; `rm -rf .next` recovers.
+- `next/image` + placeholder SVG works as-is; no image config.
+- Never run `npm run build` while a dev server is live (shared `.next` corrupts).
+- Site metrics (100+ leads/mo etc.) intentionally exceed the resume PDF — keep.
+- Served resume is `Sania_Ansari_Resume.pdf` (correct +91 number); never revert to `_Designed`.
 
 ---
 
-## Future scope (out of scope for now)
+## Future scope (out of scope for now — see docs/future-scope.md)
 
-- Wire the contact form to a real email service (Resend via an API route, or EmailJS)
-- Replace the Projects placeholders with real case studies once available
-- Revisit Next.js advisories that have no fix inside the 14.x line (would require Next 15/16)
-- Consider real brand icons for the skill balls if licensing is cleared
+- Contact form delivery (Resend/EmailJS via API route)
+- Syne font inside the OG image
+- Next 15/16 coordinated upgrade for the unfixable 14.x advisories

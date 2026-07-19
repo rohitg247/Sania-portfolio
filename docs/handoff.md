@@ -234,3 +234,48 @@ passing, no servers left running.
 **Deploy to Netlify** by following `docs/deploy-netlify.md`. Then work the post-deploy
 checklist — particularly that the 3D balls initialise (WebGL differs behind a CDN) and
 that fonts resolve (`next/font` fetches from Google at build time).
+
+---
+
+## 2026-07-20 (later) — v2 design revamp on `dev` branch
+
+### What happened
+
+A full design audit (Apple/Stripe/Vercel/Linear bar) scored the site ~6.5/10: solid
+engineering but template-looking. User approved implementing **all** High + Medium +
+Nice-to-have findings. All work lives on the **`dev` branch**, pushed to `origin/dev`.
+**`main` is untouched** — merge only after user review.
+
+### Shipped (8 commits on dev)
+
+1. **Tokens** — new `--primary-text` (AA on light bg; bright pink failed 2.7:1),
+   neutralized borders/shadows, `.grain` utility, theme-var gradient stops.
+2. **Hero** — 3 CTAs cut to 2 (one gradient primary), typewriter → masked word-rotate,
+   count-up stat row (5+ yrs, 100+ leads/mo, ~25% CPL, ₹1.5L/mo), name word-stagger,
+   fluid clamp type.
+3. **Restraint** — left-aligned section headings (gradient bar deleted), language
+   star-bars → proficiency chips, education trimmed to 2 entries (user-approved).
+4. **Skills** — 12 WebGL balls replaced with flat spotlight-hover grid using real
+   brand logos (Simple Icons CC0, inlined in `src/components/brand-icons.jsx`) +
+   lucide for concept skills. `three`/`@react-three/fiber`/`@react-three/drei`
+   uninstalled; `public/icons/` and `src/components/canvas/` deleted.
+5. **Nav/motion** — scrollspy with animated pill, scroll-progress hairline,
+   button press states, custom cursor deleted, drawer inerts the page behind it.
+6. **Projects/timeline** — shimmer skeletons → single intentional "case studies in
+   progress" card (user-approved); alternating timeline → single left rail.
+7. **Meta** — OG image generated at build via `next/og`, openGraph/twitter metadata,
+   `metadataBase` from Netlify's `URL` env.
+8. **Docs** — CLAUDE.md pins/gotchas updated (R3F sections removed), this handoff.
+
+### State
+
+- `dev` builds clean; first-load JS 158 kB (three.js removal was the big win).
+- `main` still has the v1 site; deploy-to-Netlify next step from the previous session
+  still applies but should now target the merged result after review.
+- Still blocked on Sania's assets: real photo, real social URLs, case studies.
+
+### Most important next step
+
+**User reviews the dev branch locally (`git checkout dev`, `npm run dev`), then merge
+`dev` → `main` and deploy via `docs/deploy-netlify.md`.** Post-deploy: verify the OG
+image renders at `<site>/opengraph-image` and link previews pick it up.

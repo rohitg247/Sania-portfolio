@@ -132,3 +132,33 @@ The new resume omits the metrics the old one contained (100+ enquiries/month, �
 ### Verified, not changed
 - **`next/image` with the placeholder SVG works as-is.** Suspected a bug because Next refuses to optimise SVGs without `dangerouslyAllowSVG`, and `/_next/image?url=...svg` does return 400. But Next never routes SVGs through the optimiser — the rendered `<img>` points straight at `/profile-placeholder.svg` and loads at 640px with zero failed requests. **No image configuration is needed for Netlify.** Do not "fix" this.
 - Netlify needs **no code changes**: `netlify.toml`, `.nvmrc` (Node 20) and the `build` script already cover it, and no environment variables are required.
+
+---
+
+## 2026-07-20 (later) — v2 design revamp (branch: dev)
+
+### Created
+- `src/components/brand-icons.jsx` — Simple Icons (CC0) brand glyph components
+- `src/app/opengraph-image.jsx` — build-time OG card via next/og
+
+### Modified
+- `src/app/globals.css` — `--primary-text`, `--shadow-soft`, `--text-grad-*` tokens; neutral borders; `.grain`; neutral card shadows
+- `tailwind.config.js` — `primary.text` color
+- `src/lib/constants.js` — ROTATING_ROLES (was TYPEWRITER_PHRASES), STATS, LANGUAGES levels, EDUCATION trimmed to 2, SKILL_GROUPS brand colors
+- `src/components/sections/hero.jsx` — 2 CTAs, word-rotate, count-up stat row, name stagger, fluid type, grain
+- `src/components/section-wrapper.jsx` — left-aligned SectionHeading, no gradient bar, fluid h2
+- `src/components/sections/about.jsx` — language chips replace star bars
+- `src/components/sections/skills.jsx` — spotlight brand-logo grid replaces 3D balls
+- `src/components/sections/experience.jsx` — single left-rail timeline
+- `src/components/sections/projects.jsx` — single intent card replaces 4 shimmer skeletons
+- `src/components/navbar.jsx` — scrollspy pill, scroll progress hairline, inert behind drawer
+- `src/components/ui/button.jsx` — active:scale press state
+- `src/app/layout.jsx` — cursor removed, openGraph/twitter metadata, metadataBase
+- `src/components/sections/education.jsx`, `contact.jsx`, `footer.jsx` — text-primary → text-primary-text swaps
+- `CLAUDE.md` — R3F pins/gotchas removed, new token/icon/spotlight gotchas
+- `package.json` / `package-lock.json` — three, @react-three/fiber, @react-three/drei removed
+
+### Deleted
+- `src/components/canvas/` (ball-canvas, skill-ball, ball-boundary)
+- `src/components/custom-cursor.jsx`
+- `public/icons/` (12 text-glyph SVGs)

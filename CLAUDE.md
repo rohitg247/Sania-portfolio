@@ -29,7 +29,7 @@ Append any newly identified items that are out of scope for the current session 
 
 ## Project Context
 
-**What this is:** Sania Ansari's personal portfolio — Digital Marketing Manager & Graphic Designer, Mumbai. Next.js 14 (App Router) + Tailwind v3 + Framer Motion + React Three Fiber. Static, no backend.
+**What this is:** Sania Ansari's personal portfolio — Digital Marketing Manager & Graphic Designer, Mumbai. Next.js 14 (App Router) + Tailwind v3 + Framer Motion. Static, no backend. (React Three Fiber was removed in the 2026-07-20 v2 revamp — the 3D skill balls are gone.)
 
 **Deploy target:** Netlify, via `netlify.toml` + `@netlify/plugin-nextjs` (Netlify's Next.js Runtime). `.nvmrc` pins Node 20. Not a static export — the runtime is kept so a real contact API route can be added later without re-plumbing the deploy.
 
@@ -42,8 +42,8 @@ Append any newly identified items that are out of scope for the current session 
 ## Version pins that must not drift
 
 - **Next 14 → React 18.** Do not upgrade React to 19 without also moving to Next 15.
-- **@react-three/fiber v8, @react-three/drei v9.** R3F v9 requires React 19 and will break the build here.
 - **Tailwind v3**, not v4 — the token setup and shadcn-style primitives assume v3.
+- (three/@react-three/fiber/@react-three/drei were uninstalled in the v2 revamp — do not re-add without asking.)
 
 ## Known constraints
 
@@ -55,11 +55,11 @@ Append any newly identified items that are out of scope for the current session 
 
 ## Gotchas learned the hard way
 
-- **3D ball camera:** the sphere is `scale={2.75}` (5.5 units across). The Canvas camera must stay wide (`fov: 75`, `position: [0,0,5]`). A narrow fov clips the sphere into a flat square patch.
-- **Directional light position** must sit well outside the sphere (`[3,4,6]`). A position near the origin gives a degenerate light direction and shades every facet flat grey.
-- **Skill icons are transparent-background SVGs** in `public/icons/`. An opaque background reads as a square patch stuck to the ball. They are committed assets — nothing generates them at build time. To regenerate: author 256×256 SVGs with explicit `width`/`height` (TextureLoader needs intrinsic dimensions) containing only a gradient-filled `<text>` glyph.
 - **Framer Motion serialises `initial` into SSR markup**, so every scroll-reveal element ships as `opacity:0`. Without JS the page below the hero would be invisible — hence the `<noscript>` override in `src/app/layout.jsx`. Keep it.
-- Each ball is wrapped in `BallBoundary` so a missing/corrupt icon degrades that one sphere instead of killing the whole Canvas. Verified: removing one icon leaves the other 11 rendering.
+- **Skill icons are inline brand glyphs** in `src/components/brand-icons.jsx` — official Simple Icons paths (CC0), `fill="currentColor"` so hover tinting works. Concept skills (SEO, CRM, etc.) use lucide-react. `public/icons/` no longer exists.
+- **Two pink tokens on purpose:** `--primary` (bright #FF6B9D) is for fills/gradients only; `--primary-text` is the AA-compliant darker variant for small text on light surfaces. Don't put `text-primary` on small copy.
+- **Spotlight card hover** in skills sets `--mx`/`--my` CSS vars per card via `onMouseMove`; the overlay reads them in a `radial-gradient`. CorelDRAW's official brand hex is black, so its `color` is `null` → falls back to `hsl(var(--foreground))`.
+- **`metadataBase` reads `process.env.URL`** — Netlify injects it at build; locally it falls back to localhost. No env setup needed.
 
 ---
 
@@ -75,7 +75,7 @@ Append any newly identified items that are out of scope for the current session 
 
 ## Explicitly Out of Scope (do not touch unless user asks)
 
-- Projects section (`src/components/sections/projects.jsx`) — deliberately placeholder skeletons; Sania has no case studies published yet
+- Projects section (`src/components/sections/projects.jsx`) — a single intentional "case studies in progress" card (replaced the shimmer skeletons in the v2 revamp); real case studies still pending from Sania
 - Real social URLs — `SOCIALS` in constants are `#` placeholders until real handles are supplied
 - The profile photo — `public/profile-placeholder.svg` stands in until a real image is provided
 - Wiring the contact form to an email service
