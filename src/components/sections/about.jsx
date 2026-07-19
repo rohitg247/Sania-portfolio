@@ -1,35 +1,8 @@
 'use client';
 
 import Image from 'next/image';
-import { motion } from 'framer-motion';
 import { SectionWrapper, SectionHeading, FadeIn } from '@/components/section-wrapper';
 import { ABOUT_BIO, LANGUAGES } from '@/lib/constants';
-
-function LanguageBar({ name, rating, delay }) {
-  const percent = (rating / 5) * 100;
-
-  return (
-    <div>
-      <div className="mb-2 flex items-baseline justify-between">
-        <span className="text-sm font-semibold">{name}</span>
-        <span className="text-sm tracking-widest text-primary" aria-hidden>
-          {'★'.repeat(rating)}
-          <span className="text-muted-foreground/40">{'★'.repeat(5 - rating)}</span>
-        </span>
-        <span className="sr-only">{rating} out of 5</span>
-      </div>
-      <div className="h-2 w-full overflow-hidden rounded-full bg-muted">
-        <motion.div
-          initial={{ width: 0 }}
-          whileInView={{ width: `${percent}%` }}
-          viewport={{ once: true, amount: 0.6 }}
-          transition={{ duration: 0.9, delay, ease: [0.22, 1, 0.36, 1] }}
-          className="gradient-primary h-full rounded-full"
-        />
-      </div>
-    </div>
-  );
-}
 
 export function About() {
   return (
@@ -48,10 +21,15 @@ export function About() {
             </div>
 
             <div className="mt-10">
-              <h3 className="mb-5 text-lg font-bold">Languages</h3>
-              <div className="space-y-5">
-                {LANGUAGES.map((language, i) => (
-                  <LanguageBar key={language.name} {...language} delay={i * 0.1} />
+              <h3 className="mb-4 text-lg font-bold">Languages</h3>
+              <div className="flex flex-wrap gap-2.5">
+                {LANGUAGES.map((language) => (
+                  <span
+                    key={language.name}
+                    className="rounded-full border border-border bg-card px-4 py-2 text-sm font-semibold"
+                  >
+                    {language.name} <span className="text-muted-foreground">· {language.level}</span>
+                  </span>
                 ))}
               </div>
             </div>

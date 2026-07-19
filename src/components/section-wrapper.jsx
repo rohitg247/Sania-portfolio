@@ -45,15 +45,14 @@ export function FadeIn({ delay = 0, className, children }) {
 
 export function SectionHeading({ eyebrow, title, subtitle, className }) {
   return (
-    <div className={cn('mx-auto mb-14 max-w-2xl text-center', className)}>
+    <div className={cn('mb-14 max-w-2xl', className)}>
       {eyebrow ? (
         <p className="mb-3 text-sm font-semibold uppercase tracking-[0.2em] text-primary-text">
           {eyebrow}
         </p>
       ) : null}
-      <h2 className="text-3xl font-bold tracking-tight sm:text-4xl md:text-5xl">{title}</h2>
-      <div className="gradient-primary mx-auto mt-5 h-1 w-20 rounded-full" />
-      {subtitle ? <p className="mt-5 text-base text-muted-foreground">{subtitle}</p> : null}
+      <h2 className="text-[clamp(1.875rem,4vw,3rem)] font-bold tracking-tight">{title}</h2>
+      {subtitle ? <p className="mt-4 text-base text-muted-foreground">{subtitle}</p> : null}
     </div>
   );
 }

@@ -38,10 +38,10 @@ export const ABOUT_BIO = [
 ];
 
 export const LANGUAGES = [
-  { name: 'English', rating: 5 },
-  { name: 'Hindi', rating: 5 },
-  { name: 'Urdu', rating: 4 },
-  { name: 'Marathi', rating: 3 },
+  { name: 'English', level: 'Fluent' },
+  { name: 'Hindi', level: 'Fluent' },
+  { name: 'Urdu', level: 'Proficient' },
+  { name: 'Marathi', level: 'Conversational' },
 ];
 
 // `icon` maps to /public/icons/<icon>.png — see CLAUDE.md for how these were generated.
@@ -116,6 +116,7 @@ export const EXPERIENCE = [
   },
 ];
 
+// H.S.C./S.S.C. dropped per user decision — only the two relevant credentials shown.
 export const EDUCATION = [
   {
     year: '2022',
@@ -127,16 +128,6 @@ export const EDUCATION = [
     degree: 'Bachelor of Mass Media',
     institution: 'V.E.S. College of Arts, Science & Commerce, Mumbai',
     note: 'Grade “A”',
-  },
-  {
-    year: '2017',
-    degree: 'H.S.C. | Commerce',
-    institution: 'National Sarvodaya, Mumbai, India',
-  },
-  {
-    year: '2015',
-    degree: 'S.S.C.',
-    institution: 'Loreto Convent School, Mumbai, India',
   },
 ];
 
