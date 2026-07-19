@@ -15,10 +15,24 @@ const syne = Syne({
   variable: '--font-display',
 });
 
+const description =
+  'Digital Marketing Manager with 5+ years driving lead generation for real estate and consumer brands through Google Ads, Meta campaigns, hyper-local SEO and in-house creative.';
+
 export const metadata = {
+  // Netlify injects URL at build time; localhost keeps dev warnings quiet.
+  metadataBase: new URL(process.env.URL || 'http://localhost:3000'),
   title: `${PROFILE.name} — ${PROFILE.role}`,
-  description:
-    'Digital Marketing Manager with 5+ years driving lead generation for real estate and consumer brands through Google Ads, Meta campaigns, hyper-local SEO and in-house creative.',
+  description,
+  openGraph: {
+    title: `${PROFILE.name} — ${PROFILE.role}`,
+    description,
+    type: 'website',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: `${PROFILE.name} — ${PROFILE.role}`,
+    description,
+  },
 };
 
 export const viewport = {
