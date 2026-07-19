@@ -119,3 +119,57 @@ Complete rebuild, Vite → **Next.js 14 (App Router)**:
 
 - Regenerate the resume PDF with the correct `+91` phone number — the downloadable file currently contradicts the site.
 - Supply real LinkedIn/Instagram URLs and a real profile photo.
+
+---
+
+## 2026-07-19 (later) — Resume swap, tagline, and push diagnosis
+
+### What was accomplished
+
+- **Served resume replaced.** `public/Sania_Ansari_Resume.pdf` is now a copy of `docs/Letters/Sania_Ansari_Resume.pdf` (previously `Sania_Ansari_Resume_Designed.pdf`). The new file carries the correct **+91 7045351403**, which closes the phone-number contradiction between the download and the site's contact card. No PDF editing was needed — the correct number was already in that file.
+- **Tagline** → "Digital Marketing & Graphic Designer", matching the new resume's header. Used only in the footer.
+- **`PROFILE.role` deliberately left as "Digital Marketing Manager"** — it feeds the browser tab title and is her actual current job title, which is the stronger SEO term. The tagline covers the designer half.
+- **Experience metrics deliberately kept** (100+ enquiries/month, ₹1.5 lakh/month, ~25% CPL reduction). The newer PDF words these more generally; the user chose to keep the figures on the site.
+- **`jsconfig.json`** — removed deprecated `baseUrl` (TS 7.0 drops it). Verified with a clean rebuild that all `@/` aliases still resolve.
+
+### State
+
+Three commits sit on local `dev`, working tree clean, build passing:
+
+| Commit | Contents |
+|---|---|
+| `e4fe655` | corrected resume PDF + tagline |
+| `88ecb02` | jsconfig `baseUrl` fix |
+| `673bd76` | full Next.js 14 rebuild |
+
+### BLOCKED — push authentication
+
+`git push origin dev:main` fails with 403 on every attempt:
+
+```
+Permission to rohitg247/Sania-portfolio.git denied to RohitGupta247
+```
+
+**Diagnosed root cause:** Windows Credential Manager holds an entry
+`LegacyGeneric:target=git:https://github.com` for user **`RohitGupta247`**, but the
+repo is owned by **`rohitg247`** — two different GitHub accounts. The repo itself
+exists and is public (anonymous HTTP 200), so this is purely a write-permission
+problem, not a missing repo. Cloning worked earlier only because public reads are
+anonymous.
+
+**This cannot be resolved from inside Claude Code** — new credentials must come from
+the user. Options:
+
+1. Delete the cached credential, then push from an interactive terminal so Git
+   Credential Manager can prompt for the `rohitg247` sign-in:
+   `cmdkey /delete:LegacyGeneric:target=git:https://github.com`
+   Note: this affects *all* github.com git operations on the machine, so other
+   repos will need re-authentication too.
+2. Add `RohitGupta247` as a collaborator on `rohitg247/Sania-portfolio`.
+3. Use a personal access token scoped to `rohitg247`:
+   `git remote set-url origin https://<TOKEN>@github.com/rohitg247/Sania-portfolio.git`
+
+### Most important next step
+
+Resolve the credential mismatch and push the three commits. Netlify deployment
+verification is queued behind that and cannot start until the code is on the remote.
