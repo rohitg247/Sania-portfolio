@@ -1,48 +1,70 @@
 'use client';
 
-import { useEffect, useState } from 'react';
-import { motion } from 'framer-motion';
+import { useEffect, useRef, useState } from 'react';
+import { AnimatePresence, animate, motion, useInView } from 'framer-motion';
 import { ArrowRight, Download } from 'lucide-react';
-import { Button } from '@/components/ui/button';
+import { Button, buttonVariants } from '@/components/ui/button';
 import { useIsDesktop, useReducedMotion } from '@/hooks/use-media-query';
-import { PROFILE, TYPEWRITER_PHRASES } from '@/lib/constants';
+import { PROFILE, ROTATING_ROLES, STATS } from '@/lib/constants';
+import { cn } from '@/lib/utils';
 
-function Typewriter({ phrases }) {
+function WordRotate({ phrases }) {
   const [index, setIndex] = useState(0);
-  const [text, setText] = useState('');
-  const [deleting, setDeleting] = useState(false);
   const reducedMotion = useReducedMotion();
 
   useEffect(() => {
-    if (reducedMotion) {
-      setText(phrases[0]);
-      return;
-    }
+    if (reducedMotion) return;
+    const timer = setInterval(() => setIndex((i) => (i + 1) % phrases.length), 2600);
+    return () => clearInterval(timer);
+  }, [phrases.length, reducedMotion]);
 
-    const current = phrases[index % phrases.length];
-    const done = !deleting && text === current;
-    const cleared = deleting && text === '';
-
-    const delay = done ? 1600 : cleared ? 200 : deleting ? 40 : 85;
-
-    const timer = setTimeout(() => {
-      if (done) {
-        setDeleting(true);
-      } else if (cleared) {
-        setDeleting(false);
-        setIndex((i) => (i + 1) % phrases.length);
-      } else {
-        setText(current.slice(0, text.length + (deleting ? -1 : 1)));
-      }
-    }, delay);
-
-    return () => clearTimeout(timer);
-  }, [text, deleting, index, phrases, reducedMotion]);
+  if (reducedMotion) {
+    return <span className="text-gradient">{phrases[0]}</span>;
+  }
 
   return (
-    <span className="text-gradient">
-      {text || ' '}
-      <span className="ml-0.5 inline-block w-[2px] animate-blink bg-primary align-middle" style={{ height: '1em' }} />
+    <span className="relative block overflow-hidden">
+      <AnimatePresence mode="wait">
+        <motion.span
+          key={index}
+          initial={{ y: '100%', opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          exit={{ y: '-100%', opacity: 0 }}
+          transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
+          className="text-gradient block"
+        >
+          {phrases[index]}
+        </motion.span>
+      </AnimatePresence>
+    </span>
+  );
+}
+
+function StatValue({ value, prefix = '', suffix = '', decimals = 0 }) {
+  const ref = useRef(null);
+  const inView = useInView(ref, { once: true, margin: '-40px' });
+  const reducedMotion = useReducedMotion();
+  const [display, setDisplay] = useState(reducedMotion ? value : 0);
+
+  useEffect(() => {
+    if (!inView) return;
+    if (reducedMotion) {
+      setDisplay(value);
+      return;
+    }
+    const controls = animate(0, value, {
+      duration: 1.4,
+      ease: [0.22, 1, 0.36, 1],
+      onUpdate: (v) => setDisplay(v),
+    });
+    return () => controls.stop();
+  }, [inView, value, reducedMotion]);
+
+  return (
+    <span ref={ref} className="font-display text-3xl font-extrabold tracking-tight sm:text-4xl">
+      {prefix}
+      {display.toFixed(decimals)}
+      {suffix}
     </span>
   );
 }
@@ -58,14 +80,14 @@ function Orbs() {
     { className: 'bottom-[6%] left-[35%] h-48 w-48 sm:h-72 sm:w-72', from: '#C44569', delay: '-9s' },
   ];
   const visible = isDesktop ? orbs : orbs.slice(0, 2);
-  const animate = isDesktop && !reducedMotion;
+  const animateOrbs = isDesktop && !reducedMotion;
 
   return (
     <div aria-hidden className="pointer-events-none absolute inset-0 overflow-hidden">
       {visible.map((orb, i) => (
         <div
           key={i}
-          className={`absolute rounded-full opacity-40 blur-3xl dark:opacity-25 ${orb.className} ${animate ? 'animate-float' : ''}`}
+          className={`absolute rounded-full opacity-40 blur-3xl dark:opacity-25 ${orb.className} ${animateOrbs ? 'animate-float' : ''}`}
           style={{
             background: `radial-gradient(circle, ${orb.from} 0%, transparent 70%)`,
             animationDelay: orb.delay,
@@ -76,11 +98,21 @@ function Orbs() {
   );
 }
 
+const nameContainer = {
+  hidden: {},
+  show: { transition: { staggerChildren: 0.09, delayChildren: 0.05 } },
+};
+
+const nameWord = {
+  hidden: { opacity: 0, y: 28 },
+  show: { opacity: 1, y: 0, transition: { duration: 0.6, ease: [0.22, 1, 0.36, 1] } },
+};
+
 export function Hero() {
   return (
     <section
       id="hero"
-      className="relative flex min-h-[100svh] items-center justify-center overflow-hidden pt-24"
+      className="grain relative flex min-h-[100svh] items-center justify-center overflow-hidden pt-24"
     >
       <Orbs />
 
@@ -95,27 +127,31 @@ export function Hero() {
         </motion.p>
 
         <motion.h1
-          initial={{ opacity: 0, y: 24 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.05 }}
-          className="text-5xl font-extrabold leading-[1.05] tracking-tight sm:text-6xl md:text-7xl lg:text-8xl"
+          initial="hidden"
+          animate="show"
+          variants={nameContainer}
+          className="text-[clamp(3rem,9vw,6.5rem)] font-extrabold leading-[1.05] tracking-tight"
         >
-          {PROFILE.name}
+          {PROFILE.name.split(' ').map((word) => (
+            <motion.span key={word} variants={nameWord} className="inline-block">
+              {word}&nbsp;
+            </motion.span>
+          ))}
         </motion.h1>
 
         <motion.div
           initial={{ opacity: 0, y: 24 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.15 }}
-          className="mt-5 min-h-[2.5em] text-xl font-bold sm:text-2xl md:text-4xl"
+          transition={{ duration: 0.6, delay: 0.25 }}
+          className="mt-5 text-xl font-bold sm:text-2xl md:text-4xl"
         >
-          <Typewriter phrases={TYPEWRITER_PHRASES} />
+          <WordRotate phrases={ROTATING_ROLES} />
         </motion.div>
 
         <motion.p
           initial={{ opacity: 0, y: 24 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.25 }}
+          transition={{ duration: 0.6, delay: 0.35 }}
           className="mt-6 max-w-xl text-base text-muted-foreground sm:text-lg"
         >
           5+ years driving lead generation for real estate and consumer brands — paid ads, hyper-local
@@ -125,23 +161,38 @@ export function Hero() {
         <motion.div
           initial={{ opacity: 0, y: 24 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.35 }}
+          transition={{ duration: 0.6, delay: 0.45 }}
           className="mt-10 flex w-full flex-col items-stretch gap-3 sm:w-auto sm:flex-row sm:items-center"
         >
-          <Button variant="outline" size="lg" onClick={() => scrollTo('#work')}>
-            View My Work
-          </Button>
           <Button variant="gradient" size="lg" onClick={() => scrollTo('#contact')}>
             Get In Touch <ArrowRight className="h-4 w-4" />
           </Button>
           <a
             href={PROFILE.resume}
             download
-            className="gradient-primary inline-flex min-h-12 items-center justify-center gap-2 rounded-full px-8 py-3.5 text-base font-semibold text-white shadow-soft transition-all hover:-translate-y-0.5 hover:shadow-glow focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+            className={cn(buttonVariants({ variant: 'outline', size: 'lg' }))}
           >
             <Download className="h-4 w-4" /> Download Resume
           </a>
         </motion.div>
+
+        <motion.dl
+          initial={{ opacity: 0, y: 24 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 0.6 }}
+          className="mt-16 grid w-full max-w-3xl grid-cols-2 gap-x-8 gap-y-8 sm:grid-cols-4"
+        >
+          {STATS.map((stat) => (
+            <div key={stat.label} className="flex flex-col items-center gap-1.5">
+              <dd className="order-1">
+                <StatValue {...stat} />
+              </dd>
+              <dt className="order-2 text-xs font-semibold uppercase tracking-[0.14em] text-muted-foreground">
+                {stat.label}
+              </dt>
+            </div>
+          ))}
+        </motion.dl>
       </div>
     </section>
   );

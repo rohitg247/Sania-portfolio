@@ -9,10 +9,18 @@ export const PROFILE = {
   resume: '/Sania_Ansari_Resume.pdf',
 };
 
-export const TYPEWRITER_PHRASES = [
+export const ROTATING_ROLES = [
   'Digital Marketing Manager',
   'Graphic Designer',
   'Brand Storyteller',
+];
+
+// Metrics kept on the site per user decision — the current resume PDF does not state them.
+export const STATS = [
+  { value: 5, suffix: '+', label: 'Years experience' },
+  { value: 100, suffix: '+', label: 'Leads / month' },
+  { value: 25, prefix: '~', suffix: '%', label: 'CPL reduction' },
+  { value: 1.5, prefix: '₹', suffix: 'L/mo', label: 'Budget managed', decimals: 1 },
 ];
 
 export const NAV_LINKS = [
