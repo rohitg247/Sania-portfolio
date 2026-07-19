@@ -1,6 +1,5 @@
 import { Plus_Jakarta_Sans, Syne } from 'next/font/google';
 import { ThemeProvider } from '@/components/theme-provider';
-import { CustomCursor } from '@/components/custom-cursor';
 import { PROFILE } from '@/lib/constants';
 import './globals.css';
 
@@ -42,10 +41,7 @@ export default function RootLayout({ children }) {
         <noscript>
           <style>{`[style*="opacity:0"]{opacity:1!important;transform:none!important}`}</style>
         </noscript>
-        <ThemeProvider>
-          <CustomCursor />
-          {children}
-        </ThemeProvider>
+        <ThemeProvider>{children}</ThemeProvider>
       </body>
     </html>
   );

@@ -1,15 +1,38 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { AnimatePresence, motion } from 'framer-motion';
+import { AnimatePresence, motion, useScroll } from 'framer-motion';
 import { Menu, X } from 'lucide-react';
 import { ThemeToggle } from '@/components/theme-toggle';
 import { NAV_LINKS, PROFILE } from '@/lib/constants';
 import { cn } from '@/lib/utils';
 
+function useActiveSection() {
+  const [active, setActive] = useState('');
+
+  useEffect(() => {
+    const sections = NAV_LINKS.map((link) => document.querySelector(link.href)).filter(Boolean);
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) setActive(`#${entry.target.id}`);
+        });
+      },
+      // A thin band around the viewport centre decides the active section.
+      { rootMargin: '-45% 0px -50% 0px' }
+    );
+    sections.forEach((section) => observer.observe(section));
+    return () => observer.disconnect();
+  }, []);
+
+  return active;
+}
+
 export function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
+  const active = useActiveSection();
+  const { scrollYProgress } = useScroll();
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 12);
@@ -18,11 +41,14 @@ export function Navbar() {
     return () => window.removeEventListener('scroll', onScroll);
   }, []);
 
-  // Lock body scroll while the mobile drawer is open.
+  // Lock body scroll and inert the page behind the drawer while it is open.
   useEffect(() => {
     document.body.style.overflow = open ? 'hidden' : '';
+    const page = [document.querySelector('main'), document.querySelector('footer')];
+    page.forEach((el) => el && (open ? el.setAttribute('inert', '') : el.removeAttribute('inert')));
     return () => {
       document.body.style.overflow = '';
+      page.forEach((el) => el && el.removeAttribute('inert'));
     };
   }, [open]);
 
@@ -53,8 +79,20 @@ export function Navbar() {
               <a
                 key={link.href}
                 href={link.href}
-                className="inline-flex min-h-11 items-center rounded-full px-4 text-sm font-semibold text-muted-foreground transition-colors hover:bg-accent hover:text-foreground"
+                className={cn(
+                  'relative inline-flex min-h-11 items-center rounded-full px-4 text-sm font-semibold transition-colors',
+                  active === link.href
+                    ? 'text-foreground'
+                    : 'text-muted-foreground hover:bg-accent hover:text-foreground'
+                )}
               >
+                {active === link.href && (
+                  <motion.span
+                    layoutId="nav-pill"
+                    transition={{ type: 'spring', damping: 30, stiffness: 350 }}
+                    className="absolute inset-0 -z-10 rounded-full bg-accent"
+                  />
+                )}
                 {link.label}
               </a>
             ))}
@@ -73,6 +111,12 @@ export function Navbar() {
             </button>
           </div>
         </nav>
+
+        <motion.div
+          aria-hidden
+          style={{ scaleX: scrollYProgress }}
+          className="gradient-primary h-0.5 origin-left"
+        />
       </header>
 
       <AnimatePresence>
@@ -106,7 +150,12 @@ export function Navbar() {
                   key={link.href}
                   href={link.href}
                   onClick={() => setOpen(false)}
-                  className="flex min-h-11 items-center rounded-xl px-4 text-base font-semibold text-muted-foreground transition-colors hover:bg-accent hover:text-foreground"
+                  className={cn(
+                    'flex min-h-11 items-center rounded-xl px-4 text-base font-semibold transition-colors',
+                    active === link.href
+                      ? 'bg-accent text-foreground'
+                      : 'text-muted-foreground hover:bg-accent hover:text-foreground'
+                  )}
                 >
                   {link.label}
                 </a>
