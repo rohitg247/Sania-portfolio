@@ -48,7 +48,8 @@ Append any newly identified items that are out of scope for the current session 
 ## Known constraints
 
 - `npm audit` reports Next.js advisories with no fix inside the 14.x line (they require Next 16). We are on the newest patched 14.2.x. Revisit if/when moving to Next 15+.
-- The resume PDF's text layer lists a **US phone number**, which is wrong. The correct number is `+91 7045351403` and lives in `src/lib/constants.js`. Regenerating the PDF is still outstanding — until then the downloadable resume contradicts the site's contact card.
+- The served resume is `docs/Letters/Sania_Ansari_Resume.pdf`, copied to `public/Sania_Ansari_Resume.pdf`. It carries the correct `+91 7045351403`. Do **not** revert to `Sania_Ansari_Resume_Designed.pdf` — that older file lists a wrong US number.
+- The site's Experience bullets keep metrics (100+ enquiries/month, ₹1.5 lakh/month budget, ~25% CPL reduction) that the current resume PDF does not state. This is intentional per the user; leave them.
 
 ---
 

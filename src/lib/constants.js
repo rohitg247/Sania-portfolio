@@ -1,7 +1,7 @@
 export const PROFILE = {
   name: 'Sania Ansari',
   role: 'Digital Marketing Manager',
-  tagline: 'Paid Ads, Social Media & Lead Generation',
+  tagline: 'Digital Marketing & Graphic Designer',
   location: 'Mumbai, India — 400074',
   email: 'saniaansari04@gmail.com',
   phone: '+91 7045351403',

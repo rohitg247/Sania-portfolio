@@ -104,3 +104,16 @@
 ### Rewritten
 - `CLAUDE.md` — Sania's project context, version pins, 3D gotchas; Session Handoff Protocol preserved verbatim
 - `README.md` — setup, structure, deployment
+
+---
+
+## 2026-07-19 (later) — Swap served resume + tagline
+
+### Changed
+- `public/Sania_Ansari_Resume.pdf` — replaced with a copy of `docs/Letters/Sania_Ansari_Resume.pdf` (was `Sania_Ansari_Resume_Designed.pdf`). The new file carries the correct `+91 7045351403`, resolving the phone-number contradiction between the download and the site's contact card.
+- `src/lib/constants.js` — `PROFILE.tagline` → "Digital Marketing & Graphic Designer", matching the new resume's header.
+- `jsconfig.json` — removed deprecated `baseUrl` (TS 7.0 drops it; `paths` resolves relative to the config file, supported by Next since 13.1).
+- `CLAUDE.md`, `docs/plan.md` — recorded that the PDF phone issue is resolved, and that the site's Experience metrics intentionally exceed what the current PDF states.
+
+### Note
+The new resume omits the metrics the old one contained (100+ enquiries/month, ₹1.5 lakh/month budget, ~25% CPL reduction). Per the user's decision these remain on the site; the downloadable PDF simply words them more generally.

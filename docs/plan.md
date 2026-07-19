@@ -63,7 +63,7 @@ Last updated: 2026-07-19
 
 - [ ] Real LinkedIn / Instagram URLs (currently `#` placeholders)
 - [ ] Real profile photo (currently `public/profile-placeholder.svg`)
-- [ ] Regenerate the resume PDF with the correct `+91 7045351403` phone number — the downloadable file currently contradicts the site's contact card
+- [x] ~~Regenerate the resume PDF with the correct phone number~~ — resolved 2026-07-19 by switching the served file to `docs/Letters/Sania_Ansari_Resume.pdf`, which already carries `+91 7045351403`
 
 ---
 
