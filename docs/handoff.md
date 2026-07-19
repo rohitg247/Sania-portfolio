@@ -173,3 +173,15 @@ the user. Options:
 
 Resolve the credential mismatch and push the three commits. Netlify deployment
 verification is queued behind that and cannot start until the code is on the remote.
+
+### RESOLVED — push succeeded
+
+Deleting the stale Windows credential (`cmdkey /delete:LegacyGeneric:target=git:https://github.com`)
+fixed the 403 immediately; the next push went through with no further intervention.
+All four commits are on `origin/main` at `62fef08`, and local `dev` now tracks it.
+
+Side effect to expect: clearing that credential was machine-wide, so the first push
+to any other GitHub repo (e.g. `Rohit-Portfolio`) will prompt for sign-in once.
+
+**Next step is now the Netlify deploy** — connect the repo and verify the build picks
+up `@netlify/plugin-nextjs`, fonts load, and WebGL initialises on the deployed URL.

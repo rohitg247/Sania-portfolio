@@ -54,10 +54,10 @@ Last updated: 2026-07-19
 
 ---
 
-## Blocked
+## Next up
 
-- [ ] **Push to `rohitg247/Sania-portfolio.git`** — returns 403. The authenticated account (`RohitGupta247`) lacks write access, or the repo does not exist yet. Needs the user to resolve access.
-- [ ] **Netlify deploy verification** — cannot run until the push lands. Confirm the build picks up `@netlify/plugin-nextjs`, fonts load, and WebGL initialises on the deployed URL.
+- [x] ~~Push to `rohitg247/Sania-portfolio.git`~~ — done 2026-07-19. The 403 was a stale Windows credential cached for `RohitGupta247`; deleting `LegacyGeneric:target=git:https://github.com` resolved it. Local `dev` now tracks `origin/main`.
+- [ ] **Netlify deploy** — connect the repo. Confirm the build picks up `@netlify/plugin-nextjs`, fonts load, and WebGL initialises on the deployed URL (WebGL behaves differently behind a CDN than on localhost).
 
 ## Pending — needs input from Sania
 
