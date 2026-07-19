@@ -1,6 +1,6 @@
 # Project Plan — Portfolio Refresh
 
-Last updated: 2026-07-13
+Last updated: 2026-07-19
 
 ---
 
@@ -25,26 +25,25 @@ Last updated: 2026-07-13
 ## Dependency Upgrade
 
 - [x] Remove `react-tilt` and `maath` (unused)
-- [~] Tailwind CSS 3 → 4 (`npx @tailwindcss/upgrade` codemod, `@tailwindcss/vite` plugin)
-- [ ] React 18.2 → 19.2.7 (pinned, not `^19`, due to r3f `<19.3` constraint)
-- [ ] `react-dom` 18.2 → 19.2.7
-- [ ] `@react-three/fiber` 8 → 9.6.1
-- [ ] `@react-three/drei` 9 → 10.7.7
-- [ ] `three` 0.152 → 0.184
-- [ ] Vite 4 → 8.0.16
-- [ ] `@vitejs/plugin-react` 4 → 6.0.2
-- [ ] ESLint 8 → 10 (flat config: `.eslintrc.cjs` → `eslint.config.js`)
-- [ ] `eslint-plugin-react` 7.32 → 7.37.5
-- [ ] `eslint-plugin-react-hooks` 4.6 → 7.1.1
-- [ ] `eslint-plugin-react-refresh` 0.3 → 0.5.3
-- [ ] Add `@eslint/js` + `globals` (new ESLint 10 companion packages)
-- [ ] `framer-motion` 10 → 12
-- [ ] `react-router-dom` 6 → 7
-- [ ] `react-vertical-timeline-component` 3 → 4
-- [ ] `@emailjs/browser` 3 → 4
-- [ ] Remove `autoprefixer` + `postcss` (not needed with `@tailwindcss/vite`)
-- [ ] `npm run build` clean + full visual sweep
-- [ ] Verify 3D Tech section (Ball.jsx canvas) renders correctly after r3f upgrade
+- [x] Tailwind CSS 3 → 4.3.2 (`@theme` in index.css, `@tailwindcss/vite` plugin)
+- [x] React 18.2 → 19.2.7 (pinned, due to r3f `<19.3` constraint)
+- [x] `react-dom` 18.2 → 19.2.7
+- [x] `@react-three/fiber` 8 → 9.6.1
+- [x] `@react-three/drei` 9 → 10.7.7
+- [x] `three` 0.152 → 0.185.1
+- [x] Vite 4 → 8.1.5
+- [x] `@vitejs/plugin-react` 4 → 6.0.3
+- [x] ESLint 8 → 10 (flat config: `.eslintrc.cjs` → `eslint.config.js`)
+- [x] `eslint-plugin-react` / `-react-hooks` / `-react-refresh` updated
+- [x] Add `@eslint/js` + `globals` (ESLint 10 companion packages)
+- [x] `framer-motion` 10 → 12.42.2
+- [x] `react-router-dom` 6 → 7.18.1
+- [x] `react-vertical-timeline-component` 3 → 4.0.0
+- [x] `@emailjs/browser` 3 → 4.4.1
+- [x] Remove `autoprefixer` + `postcss`
+- [x] `npm run build` clean + visual sweep (Hero verified, layout fix confirmed)
+- [x] Verify 3D Tech section (Ball.jsx canvas) renders correctly after r3f upgrade
+- [x] **Fix Tailwind v4 cascade-layer regression** (universal reset wrapped in `@layer base`)
 
 ---
 

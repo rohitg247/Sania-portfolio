@@ -32,7 +32,24 @@
 - `src/assets/logo/logo-black_New.png` — untracked swoosh mark
 - `src/assets/personal/rohitresume.pdf` — old resume, superseded by `My Resume.pdf`
 
-### Dependency changes (in progress as of this log entry)
-- Tailwind CSS v4 migration running via `npx @tailwindcss/upgrade`
-- Remaining: React 18→19, Vite 4→8, ESLint 8→10 (flat config), r3f 8→9, drei 9→10, three 0.152→0.184, framer-motion 10→12, react-router-dom 6→7, react-vertical-timeline-component 3→4, @emailjs/browser 3→4
+### Dependency changes (completed)
+- React 18.2 → 19.2.7, react-dom 18.2 → 19.2.7
+- @react-three/fiber 8 → 9.6.1, @react-three/drei 9 → 10.7.7, three 0.152 → 0.185.1
+- Vite 4 → 8.1.5 (rolldown bundler), @vitejs/plugin-react 4 → 6.0.3
+- Tailwind CSS 3 → 4.3.2 (CSS-native `@theme` in `src/index.css`, `@tailwindcss/vite` plugin)
+- ESLint 8 → 10.7.0 (flat config), framer-motion 10 → 12.42.2
+- react-router-dom 6 → 7.18.1, react-vertical-timeline-component 3 → 4.0.0, @emailjs/browser 3 → 4.4.1
 - Removed: `react-tilt` (unused, last published 2023), `maath` (unused)
+- Deleted: `tailwind.config.cjs`, `postcss.config.js`, `.eslintrc.cjs`, `autoprefixer`, `postcss`
+- Created: `eslint.config.js` (flat config)
+
+---
+
+## 2026-07-19
+
+### Fixed
+- `src/index.css` — **critical Tailwind v4 layout fix.** Wrapped the universal reset `* { margin: 0; padding: 0 }` in `@layer base`. In v4 all utilities live in `@layer utilities`, and unlayered CSS beats any layer regardless of specificity — so the bare `*` reset was overriding EVERY margin/padding utility site-wide (Hero content not centered/padded, hero image stuck on the left instead of right, etc.). Moving it into `@layer base` lets utilities win again. Verified via headless-browser computed-style inspection: Hero container `mx-auto`/`sm:px-16` and image `ml-[50vw]` now apply correctly.
+- `src/components/About.jsx` — escaped apostrophes/dash as HTML entities (`&apos;`, `&mdash;`) to clear `react/no-unescaped-entities` lint errors.
+
+### Deployment caveat discovered
+- Vite 8 uses the `rolldown` bundler, whose platform-specific native binary (`@rolldown/binding-win32-x64-msvc` on Windows) is an npm optional dependency. npm's long-standing optional-dep bug (npm/cli#4828) drops it whenever `node_modules` is mutated (install/uninstall), causing `npm run build` to fail with "Cannot find native binding." Fix: `npm install @rolldown/binding-<platform> --no-save`, or clear `node_modules` + `package-lock.json` and reinstall. Flag for Netlify: a clean CI install usually pulls the correct Linux binary, but if the build fails there, this is why.

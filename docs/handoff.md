@@ -49,12 +49,21 @@ Completed prior to this handoff:
 - Build: ✅ passes (1.99s)
 - Lint: 44 errors, 9 warnings — all pre-existing except 3 apostrophe escapes fixed in About.jsx
 
+### Session 3 accomplishments (2026-07-19)
+
+- **Diagnosed & fixed a critical Tailwind v4 layout regression.** After the upgrade the Hero (and all sections) had broken margins/padding — content flush-left, hero image on the wrong side. Root cause: the universal reset `* { margin: 0; padding: 0 }` in `src/index.css` was unlayered, and in Tailwind v4 unlayered CSS beats `@layer utilities` regardless of specificity, so it nuked every margin/padding utility. Fix: wrapped the reset in `@layer base`. Confirmed via headless-browser computed-style inspection + screenshots; user confirmed visually.
+- Escaped apostrophes in About.jsx (lint cleanup).
+- Rebuilt clean, verified Hero + Tech + Experience render correctly.
+
+### Known deployment risk (Netlify)
+
+Vite 8's `rolldown` bundler needs a platform-native binary installed as an npm optional dependency. npm bug npm/cli#4828 keeps dropping it on `node_modules` mutations locally (fixed each time with `npm install @rolldown/binding-win32-x64-msvc --no-save`). On Netlify's clean Linux install it should pull the right binary automatically, but if the deploy build fails with "Cannot find native binding," that's the cause — see docs/change.md 2026-07-19 entry.
+
 ### Next session starting point
 
-Complete EmailJS setup (user action required — see plan.md) and do full visual sweep:
-1. Open http://localhost:5173 and check all sections visually
-2. Verify: Navbar wordmark, favicon, Experience timeline (Kosqu + Nancens), resume download, GitHub/LinkedIn links in Contact
-3. Set up EmailJS account and replace .env values
+1. Watch the first Netlify deploy for the rolldown binding issue above.
+2. Complete EmailJS setup (user action — see plan.md) and replace `.env` values.
+3. Optional: full manual visual sweep of Experience/Contact by scrolling (whileInView sections).
 
 ### Blocked on (user action needed)
 

@@ -44,5 +44,8 @@ The notification email from resume downloads will arrive with whatever copy is i
 ### Resume download rate limiting
 Currently, a bot repeatedly clicking the download button could trigger unlimited notification emails and burn EmailJS's free-tier quota. Simple mitigation: `sessionStorage` flag to suppress duplicate notifications within the same browser session.
 
+### Vite 8 / rolldown bundler stability
+Vite 8 uses the new rolldown (Rust) bundler. Its platform-native binary is an npm optional dependency that npm bug npm/cli#4828 intermittently fails to install, breaking `npm run build` locally. If this becomes a recurring headache (esp. on Netlify), consider pinning Vite to 7.x (rollup-based, more mature) as a fallback — the rest of the stack (React 19, Tailwind 4) is independent of the Vite major.
+
 ### Actis Technologies company logo
 Once Rohit has the company icon/logo, add it to `src/assets/company/` and reference it in the Actis experience entry in `src/constants/index.js`. The fallback badge ("A" initial) will be replaced automatically once `icon` is set.
